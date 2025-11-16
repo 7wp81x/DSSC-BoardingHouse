@@ -12,8 +12,286 @@
     <link rel="stylesheet" href="{{ asset('css/admin-dashboard.css') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
-    
+
+
     <style>
+        /* Gallery Viewer Styles */
+        .gallery-viewer-active {
+            overflow: hidden;
+        }
+
+        .gallery-viewer-overlay {
+            background-color: rgba(0, 0, 0, 0.95) !important;
+        }
+
+        .gallery-info-panel {
+            background: rgba(0, 0, 0, 0.8) !important;
+            backdrop-filter: blur(10px);
+        }
+
+        .gallery-nav-btn {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .gallery-thumbnail {
+            width: 79px !important;
+            height: 64px !important;
+            object-fit: cover;
+        }
+
+        .gallery-main-image {
+            max-width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+        }
+
+        /* Fixed button styles */
+        .view-gallery-btn {
+            background: rgba(79, 70, 229, 0.95) !important;
+            color: white !important;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            opacity: 1 !important;
+            transform: none !important;
+        }
+
+        .view-gallery-btn:hover {
+            background: rgba(99, 102, 241, 0.95) !important;
+            transform: translateY(-1px);
+        }
+
+        /* Room image container with blur effect */
+        .room-image-container {
+            width: 100%;
+            height: 271px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .room-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(1.05);
+            transition: filter 0.3s ease, transform 0.3s ease;
+        }
+
+        .room-image-container:hover img {
+            filter: brightness(1.1) contrast(1.05);
+        }
+
+        /* Search container fixes - Hide on form view */
+        .search-container {
+            position: relative;
+            z-index: 10;
+        }
+
+        .current-view-form .search-container {
+            display: none !important;
+        }
+
+        .search-container .relative {
+            position: relative;
+        }
+
+        .search-container .absolute.inset-y-0 {
+            top: 0;
+            bottom: 0;
+        }
+
+        /* Header section improvements */
+        .header-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            color: white;
+        }
+
+        .header-section h2 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-section p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        /* Hide floating navigation buttons in gallery */
+        .gallery-floating-nav {
+            display: none;
+        }
+
+        /* Improved existing image deletion */
+        .existing-image-item {
+            position: relative;
+            transition: all 0.3s ease;
+            width: 100%;
+            height: 96px;
+        }
+
+        .existing-image-item:hover {
+            transform: scale(1.02);
+        }
+
+        .existing-image-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .delete-existing-image-btn {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            cursor: pointer;
+            opacity: 1;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+
+        .delete-existing-image-btn:hover {
+            background: #dc2626;
+            transform: scale(1.1);
+        }
+
+        /* Improved button styles */
+        .btn-primary {
+            background: #4f46e5;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: #4338ca;
+            transform: translateY(-1px);
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+            transform: translateY(-1px);
+        }
+
+        /* Mobile responsive fixes */
+        @media (max-width: 768px) {
+            .amenities-section {
+                padding: 1rem !important;
+            }
+            
+            .amenities-input-container {
+                flex-direction: column !important;
+                gap: 0.5rem !important;
+            }
+            
+            .amenities-input-container input {
+                width: 100% !important;
+                margin-bottom: 0.5rem;
+            }
+            
+            .amenities-input-container button {
+                width: 100% !important;
+            }
+            
+            .form-actions {
+                flex-direction: column !important;
+                gap: 0.75rem !important;
+            }
+            
+            .form-actions button {
+                width: 100% !important;
+            }
+            
+            .header-section {
+                padding: 1.5rem !important;
+                margin-bottom: 1.5rem !important;
+            }
+            
+            .header-section h2 {
+                font-size: 1.75rem !important;
+            }
+            
+            .existing-images-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 0.75rem !important;
+            }
+            
+            .existing-image-item {
+                height: 80px !important;
+            }
+        }
+
+        /* Form view specific styles */
+        .current-view-form {
+            position: relative;
+        }
+
+        /* Ensure proper spacing on mobile */
+        @media (max-width: 640px) {
+            .grid-cols-1 {
+                gap: 1rem !important;
+            }
+            
+            .p-6 {
+                padding: 1rem !important;
+            }
+            
+            .gap-6 {
+                gap: 1rem !important;
+            }
+        }
+
         :root {
             --bg-header: #ffffff;
             --header-height: 70px;
@@ -393,9 +671,18 @@
             }
         });
 
-        // Update page title based on current page
+        // Listen for page reload events
+        Livewire.on('page-reload', () => {
+            setTimeout(() => {
+                window.location.reload();
+            }, 100);
+        });
+
+        // Handle alert messages
+        Livewire.on('alert', (data) => {
+            alert(data.message);
+        });
         
     </script>
-@livewireScripts
 </body>
 </html>

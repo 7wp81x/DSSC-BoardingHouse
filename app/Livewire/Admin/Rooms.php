@@ -7,33 +7,43 @@ use Livewire\WithFileUploads;
 use App\Models\Room;
 use App\Models\RoomImage;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Rooms extends Component
 {
     use WithFileUploads;
 
-    public $currentView = 'grid'; // 'grid', 'form'
+    public $currentView = 'grid';
     public $editingId = null;
     public $room_code = '';
     public $type = '';
     public $price = '';
     public $description = '';
+    public $status = 'available';
     public $amenities = [];
     public $amenityInput = '';
     public $images = [];
     public $existingImages = [];
     public $rooms;
+    public $search = '';
     public $selectedRoom = null;
     public $currentImageIndex = 0;
     public $viewerActive = false;
+    public $showDeleteModal = false;
+    public $roomToDelete = null;
 
-    protected $rules = [
-        'room_code' => 'required|unique:rooms,room_code',
-        'type' => 'required|in:single,twin,quad,premium',
-        'price' => 'required|numeric|min:1',
-        'description' => 'nullable|string|max:500',
-        'images.*' => 'image|max:5120', // 5MB per image
-    ];
+    public function rules()
+    {
+        return [
+            'room_code' => ['required', 'string', 'max:50', 'unique:rooms,room_code,' . $this->editingId],
+            'type' => 'required|in:single,twin,quad,premium',
+            'price' => 'required|numeric|min:1',
+            'status' => 'required|in:available,occupied,full',
+            'description' => 'nullable|string|max:500',
+            'images.*' => 'image|max:5120',
+            'amenities.*' => 'string|max:100',
+        ];
+    }
 
     public function mount()
     {
@@ -42,24 +52,46 @@ class Rooms extends Component
 
     public function loadRooms()
     {
-        $this->rooms = Room::with('images')->latest()->get();
+        $query = Room::with(['images', 'currentStudents.user'])->latest();
+
+        if ($this->search) {
+            $query->where(function ($q) {
+                $q->where('room_code', 'like', '%' . $this->search . '%')
+                  ->orWhere('id', $this->search);
+            });
+        }
+
+        $this->rooms = $query->get();
+    }
+
+    public function updatedSearch()
+    {
+        $this->loadRooms();
+    }
+
+    public function clearSearch()
+    {
+        $this->search = '';
+        $this->loadRooms();
     }
 
     public function resetForm()
     {
         $this->reset([
-            'editingId', 'room_code', 'type', 'price', 'description', 
+            'editingId', 'room_code', 'type', 'price', 'description', 'status', 
             'amenities', 'amenityInput', 'images', 'existingImages'
         ]);
         $this->resetErrorBag();
-        // Reset the room_code validation rule to default
-        $this->rules['room_code'] = 'required|unique:rooms,room_code';
     }
 
     public function showGrid()
     {
         $this->currentView = 'grid';
         $this->resetForm();
+        $this->loadRooms();
+        
+        // Force browser reload to reset everything
+        $this->js('window.location.reload()');
     }
 
     public function showForm()
@@ -88,13 +120,43 @@ class Rooms extends Component
         $this->images = array_values($this->images);
     }
 
+    // Delete existing image from room
+    public function deleteExistingImage($imageId)
+    {
+        $image = RoomImage::findOrFail($imageId);
+        
+        // Check if this is the only image
+        $room = $image->room;
+        if ($room->images()->count() <= 1) {
+            $this->dispatch('alert', [
+                'type' => 'error',
+                'message' => 'Cannot delete the only image. Room must have at least one image.'
+            ]);
+            return;
+        }
+
+        // Delete from storage
+        Storage::disk('public')->delete($image->image_path);
+        
+        // Delete from database
+        $image->delete();
+
+        // Reload existing images
+        $this->loadExistingImages();
+
+        $this->dispatch('alert', [
+            'type' => 'success',
+            'message' => 'Image deleted successfully.'
+        ]);
+    }
+
     public function removeExistingImage($id)
     {
         $image = RoomImage::findOrFail($id);
         Storage::disk('public')->delete($image->image_path);
         $image->delete();
 
-        $this->existingImages = array_filter($this->existingImages, fn($img) => $img['id'] !== $id);
+        $this->loadExistingImages();
     }
 
     public function edit($id)
@@ -105,15 +167,22 @@ class Rooms extends Component
         $this->type = $room->type;
         $this->price = $room->price;
         $this->description = $room->description;
+        $this->status = $room->status;
         $this->amenities = $room->amenities ?? [];
-        $this->existingImages = $room->images->map(fn($image) => [
-            'id' => $image->id,
-            'image_path' => $image->image_path,
-        ])->toArray();
+        $this->loadExistingImages();
         
         $this->currentView = 'form';
-        // Update validation rule for editing
-        $this->rules['room_code'] = 'required|unique:rooms,room_code,' . $id;
+    }
+
+    protected function loadExistingImages()
+    {
+        if ($this->editingId) {
+            $room = Room::find($this->editingId);
+            $this->existingImages = $room->images->map(fn($image) => [
+                'id' => $image->id,
+                'image_path' => $image->image_path,
+            ])->toArray();
+        }
     }
 
     public function save()
@@ -125,6 +194,7 @@ class Rooms extends Component
             'type' => $this->type,
             'price' => $this->price,
             'description' => $this->description,
+            'status' => $this->status,
             'amenities' => $this->amenities,
         ];
 
@@ -145,25 +215,42 @@ class Rooms extends Component
                     'room_id' => $room->id,
                     'image_path' => $path,
                     'is_primary' => ($existingCount === 0 && $index === 0),
-                    'order' => $existingCount + $index,
+                    'order' => $existingCount + $index + 1,
                 ]);
             }
         }
 
-        $room->refresh();
+        // Ensure primary image
         if ($room->images()->exists() && !$room->images()->where('is_primary', true)->exists()) {
             $room->images()->orderBy('order')->first()->update(['is_primary' => true]);
         }
 
-        $this->showGrid(); // Use showGrid to reset everything properly
-        $this->loadRooms();
-        
-        session()->flash('message', $message);
+        // Show success message and redirect to grid view
+        $this->dispatch('alert', [
+            'type' => 'success',
+            'message' => $message
+        ]);
+
+        // Force reload to prevent state issues
+        $this->showGrid();
     }
 
     public function cancel()
     {
-        $this->showGrid(); // Use showGrid to reset everything properly
+        // Force page reload to reset everything
+        $this->showGrid();
+    }
+
+    public function confirmDelete($id)
+    {
+        $this->roomToDelete = Room::findOrFail($id);
+        $this->showDeleteModal = true;
+    }
+
+    public function closeDeleteModal()
+    {
+        $this->showDeleteModal = false;
+        $this->roomToDelete = null;
     }
 
     public function delete($id)
@@ -174,9 +261,16 @@ class Rooms extends Component
             $image->delete();
         }
         $room->delete();
-        $this->loadRooms();
+        $this->closeDeleteModal();
         
-        session()->flash('message', 'Room deleted successfully!');
+        // Show success message and reload
+        $this->dispatch('alert', [
+            'type' => 'success',
+            'message' => 'Room deleted successfully!'
+        ]);
+
+        // Force reload after delete
+        $this->showGrid();
     }
 
     public function openViewer($roomId)
