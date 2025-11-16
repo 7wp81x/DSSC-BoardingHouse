@@ -31,6 +31,9 @@
         @case('bullhorn')
             <i class="fas fa-bullhorn w-5 h-5 text-center {{ $active ? 'text-white' : 'text-gray-500' }}"></i>
             @break
+        @case('academic-cap')
+            <i class="fas fa-user-graduate w-5 h-5 text-center {{ $active ? 'text-white' : 'text-gray-500' }}"></i>
+            @break
         @default
             <i class="fas fa-home w-5 h-5 text-center {{ $active ? 'text-white' : 'text-gray-500' }}"></i>
     @endswitch

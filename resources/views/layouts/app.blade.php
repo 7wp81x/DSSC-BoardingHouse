@@ -6,459 +6,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'Laravel') }} - @yield('title', 'Dashboard')</title>
     
+    <!-- External Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('css/fontawesome/all.min.css') }}">
+    
+    <!-- Custom CSS Files -->
+    <link rel="stylesheet" href="{{ asset('css/app-layout.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dashboard-styles.css') }}">
     <link rel="stylesheet" href="{{ asset('css/admin-dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin.styles.css') }}">
+
+    <!-- Conditional CSS based on URI -->
+    @if (str_contains(strtolower(request()->path()), 'student-boarders'))
+        <link rel="stylesheet" href="{{ asset('css/student-details.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/student-boarders.css') }}">
+
+    @endif
+
+    @if (str_contains(strtolower(request()->path()), 'payments'))
+        <link rel="stylesheet" href="{{ asset('css/admin-payments.css') }}">
+    @endif
+    
+    <!-- Vite Assets -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
     @livewireStyles
-
-
-    <style>
-        /* Gallery Viewer Styles */
-        .gallery-viewer-active {
-            overflow: hidden;
-        }
-
-        .gallery-viewer-overlay {
-            background-color: rgba(0, 0, 0, 0.95) !important;
-        }
-
-        .gallery-info-panel {
-            background: rgba(0, 0, 0, 0.8) !important;
-            backdrop-filter: blur(10px);
-        }
-
-        .gallery-nav-btn {
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .gallery-thumbnail {
-            width: 79px !important;
-            height: 64px !important;
-            object-fit: cover;
-        }
-
-        .gallery-main-image {
-            max-width: 100%;
-            max-height: 70vh;
-            object-fit: contain;
-        }
-
-        /* Fixed button styles */
-        .view-gallery-btn {
-            background: rgba(79, 70, 229, 0.95) !important;
-            color: white !important;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            opacity: 1 !important;
-            transform: none !important;
-        }
-
-        .view-gallery-btn:hover {
-            background: rgba(99, 102, 241, 0.95) !important;
-            transform: translateY(-1px);
-        }
-
-        /* Room image container with blur effect */
-        .room-image-container {
-            width: 100%;
-            height: 271px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .room-image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: brightness(1.05);
-            transition: filter 0.3s ease, transform 0.3s ease;
-        }
-
-        .room-image-container:hover img {
-            filter: brightness(1.1) contrast(1.05);
-        }
-
-        /* Search container fixes - Hide on form view */
-        .search-container {
-            position: relative;
-            z-index: 10;
-        }
-
-        .current-view-form .search-container {
-            display: none !important;
-        }
-
-        .search-container .relative {
-            position: relative;
-        }
-
-        .search-container .absolute.inset-y-0 {
-            top: 0;
-            bottom: 0;
-        }
-
-        /* Header section improvements */
-        .header-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 12px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            color: white;
-        }
-
-        .header-section h2 {
-            font-size: 2.25rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .header-section p {
-            opacity: 0.9;
-            font-size: 1.1rem;
-        }
-
-        /* Hide floating navigation buttons in gallery */
-        .gallery-floating-nav {
-            display: none;
-        }
-
-        /* Improved existing image deletion */
-        .existing-image-item {
-            position: relative;
-            transition: all 0.3s ease;
-            width: 100%;
-            height: 96px;
-        }
-
-        .existing-image-item:hover {
-            transform: scale(1.02);
-        }
-
-        .existing-image-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-
-        .delete-existing-image-btn {
-            position: absolute;
-            top: -6px;
-            right: -6px;
-            background: #ef4444;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 28px;
-            height: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.875rem;
-            cursor: pointer;
-            opacity: 1;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-            z-index: 10;
-        }
-
-        .delete-existing-image-btn:hover {
-            background: #dc2626;
-            transform: scale(1.1);
-        }
-
-        /* Improved button styles */
-        .btn-primary {
-            background: #4f46e5;
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn-primary:hover {
-            background: #4338ca;
-            transform: translateY(-1px);
-        }
-
-        .btn-danger {
-            background: #ef4444;
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn-danger:hover {
-            background: #dc2626;
-            transform: translateY(-1px);
-        }
-
-        .btn-secondary {
-            background: #6b7280;
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn-secondary:hover {
-            background: #4b5563;
-            transform: translateY(-1px);
-        }
-
-        /* Mobile responsive fixes */
-        @media (max-width: 768px) {
-            .amenities-section {
-                padding: 1rem !important;
-            }
-            
-            .amenities-input-container {
-                flex-direction: column !important;
-                gap: 0.5rem !important;
-            }
-            
-            .amenities-input-container input {
-                width: 100% !important;
-                margin-bottom: 0.5rem;
-            }
-            
-            .amenities-input-container button {
-                width: 100% !important;
-            }
-            
-            .form-actions {
-                flex-direction: column !important;
-                gap: 0.75rem !important;
-            }
-            
-            .form-actions button {
-                width: 100% !important;
-            }
-            
-            .header-section {
-                padding: 1.5rem !important;
-                margin-bottom: 1.5rem !important;
-            }
-            
-            .header-section h2 {
-                font-size: 1.75rem !important;
-            }
-            
-            .existing-images-grid {
-                grid-template-columns: repeat(2, 1fr) !important;
-                gap: 0.75rem !important;
-            }
-            
-            .existing-image-item {
-                height: 80px !important;
-            }
-        }
-
-        /* Form view specific styles */
-        .current-view-form {
-            position: relative;
-        }
-
-        /* Ensure proper spacing on mobile */
-        @media (max-width: 640px) {
-            .grid-cols-1 {
-                gap: 1rem !important;
-            }
-            
-            .p-6 {
-                padding: 1rem !important;
-            }
-            
-            .gap-6 {
-                gap: 1rem !important;
-            }
-        }
-
-        :root {
-            --bg-header: #ffffff;
-            --header-height: 70px;
-            --sidebar-width: 250px;
-            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-            --primary: #4f46e5;
-            --accent: #6366f1;
-            --light-text: #ffffff;
-            --text-secondary: #6b7280;
-        }
-
-        .dark {
-            --bg-header: #1f2937;
-            --text-secondary: #9ca3af;
-        }
-
-        .admin-header {
-            background-color: var(--bg-header);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            top: 0px;
-            left: 0px;
-            right: 0px;
-            height: var(--header-height);
-            z-index: 100;
-            box-shadow: var(--shadow-sm);
-            padding: 0 2rem;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .sidebar-toggle {
-            background: none;
-            border: none;
-            font-size: 1.25rem;
-            color: var(--text-secondary);
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-        }
-
-        .sidebar-toggle:hover {
-            background-color: rgba(0, 0, 0, 0.05);
-            color: var(--primary);
-        }
-
-        .dark .sidebar-toggle:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-
-        .header-left h1 {
-            margin: 0;
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-        }
-
-        .header-left h1 i {
-            color: var(--primary);
-            margin-right: 0.5rem;
-        }
-
-        .profile {
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.7rem;
-            padding: 0.5rem;
-            border-radius: 8px;
-            transition: background-color 0.3s;
-        }
-
-        .profile:hover {
-            background-color: rgba(0, 0, 0, 0.05);
-        }
-
-        .dark .profile:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            right: 2rem;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            min-width: 250px;
-            z-index: 1000;
-            display: none;
-        }
-
-        .dark .dropdown-menu {
-            background: #374151;
-            border: 1px solid #4b5563;
-        }
-
-        .dropdown-menu.show {
-            display: block;
-        }
-
-        /* Sidebar styles */
-        .sidebar {
-            position: fixed;
-            top: var(--header-height);
-            left: 0;
-            width: var(--sidebar-width);
-            height: calc(100vh - var(--header-height));
-            background: white;
-            border-right: 1px solid #e5e7eb;
-            transition: transform 0.3s ease;
-            z-index: 90;
-            overflow-y: auto;
-        }
-
-        .dark .sidebar {
-            background: #1f2937;
-            border-right-color: #374151;
-        }
-
-        .sidebar.collapsed {
-            transform: translateX(-100%);
-        }
-
-        .main-content {
-            margin-left: var(--sidebar-width);
-            margin-top: var(--header-height);
-            transition: margin-left 0.3s ease;
-        }
-
-        .main-content.expanded {
-            margin-left: 0;
-        }
-
-        /* Navigation item styles */
-        .nav-item {
-            display: flex;
-            align-items: center;
-            color: var(--text-secondary);
-            padding: 1rem 1.5rem;
-            text-decoration: none;
-            transition: 0.3s;
-            gap: 0.8rem;
-            border-left: 4px solid transparent;
-        }
-
-        .nav-item:hover {
-            background-color: rgba(0, 0, 0, 0.05);
-        }
-
-        .dark .nav-item:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-
-        .nav-item.active {
-            background-color: var(--primary);
-            color: var(--light-text);
-            border-left: 4px solid var(--accent);
-        }
-    </style>
 </head>
 
 <body class="min-h-screen bg-gray-50 dark:bg-zinc-900">
@@ -469,13 +44,16 @@
             <button id="sidebarToggle" class="sidebar-toggle" aria-label="Toggle sidebar">
                 <i class="fas fa-bars" aria-hidden="true"></i>
             </button>
-            <h1><i class="fas fa-home" aria-hidden="true"></i> <span id="page-title">
-                @if(auth()->user()->role === 'admin')
-                    Admin Portal
-                @else
-                    Student Portal
-                @endif
-            </span></h1>
+            <h1>
+                <i class="fas fa-home" aria-hidden="true"></i> 
+                <span id="page-title">
+                    @if(auth()->user()->role === 'admin')
+                        Admin Portal
+                    @else
+                        Student Portal
+                    @endif
+                </span>
+            </h1>
         </div>
         
         <!-- Profile Dropdown -->
@@ -522,7 +100,7 @@
 
                     <button onclick="toggleTheme()" class="w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg transition-colors">
                         <i class="fas fa-palette w-5 h-5 text-center"></i>
-                        Light Mode
+                        <span class="theme-text">Light Mode</span>
                     </button>
 
                     <a href="{{ route('settings') }}" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg transition-colors">
@@ -599,8 +177,6 @@
         </div>
     </main>
 
-
-
     <script>
         // Sidebar toggle functionality
         const sidebarToggle = document.getElementById('sidebarToggle');
@@ -628,20 +204,21 @@
             const html = document.documentElement;
             const isDark = html.classList.contains('dark');
             const themeButton = event.currentTarget;
+            const themeText = themeButton.querySelector('.theme-text');
             
             if (isDark) {
                 html.classList.remove('dark');
                 localStorage.setItem('theme', 'light');
                 themeButton.innerHTML = `
                     <i class="fas fa-moon w-5 h-5 text-center"></i>
-                    Dark Mode
+                    <span class="theme-text">Dark Mode</span>
                 `;
             } else {
                 html.classList.add('dark');
                 localStorage.setItem('theme', 'dark');
                 themeButton.innerHTML = `
                     <i class="fas fa-sun w-5 h-5 text-center"></i>
-                    Light Mode
+                    <span class="theme-text">Light Mode</span>
                 `;
             }
         }
@@ -665,24 +242,28 @@
                 if (themeButton) {
                     themeButton.innerHTML = `
                         <i class="fas fa-sun w-5 h-5 text-center"></i>
-                        Light Mode
+                        <span class="theme-text">Light Mode</span>
                     `;
                 }
             }
         });
 
-        // Listen for page reload events
-        Livewire.on('page-reload', () => {
-            setTimeout(() => {
-                window.location.reload();
-            }, 100);
-        });
+        // Livewire event listeners
+        document.addEventListener('livewire:init', function() {
+            // Listen for page reload events
+            Livewire.on('page-reload', () => {
+                setTimeout(() => {
+                    window.location.reload();
+                }, 100);
+            });
 
-        // Handle alert messages
-        Livewire.on('alert', (data) => {
-            alert(data.message);
+            // Handle alert messages
+            Livewire.on('alert', (data) => {
+                alert(data.message);
+            });
         });
-        
     </script>
+    
+    @livewireScripts
 </body>
 </html>

@@ -28,15 +28,17 @@ Route::middleware('auth')->group(function () {
 });
 
 // ADMIN ROUTES
-// ADMIN ROUTES
-// ADMIN ROUTES
-// ADMIN ROUTES
 Route::middleware(['auth', 'role:admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
         Route::get('/dashboard', \App\Livewire\Admin\Dashboard::class)->name('dashboard');
+        
+        // Rooms routes
         Route::get('/rooms', \App\Livewire\Admin\Rooms::class)->name('rooms');
+        Route::get('/rooms/create', \App\Livewire\Admin\CreateRoom::class)->name('rooms.create');
+        Route::get('/rooms/{room}/edit', \App\Livewire\Admin\EditRoom::class)->name('rooms.edit');
+        
         Route::get('/student-boarders', \App\Livewire\Admin\StudentBoarders::class)->name('student-boarders.index');
         Route::get('/student-boarders/{studentBoarder}', \App\Livewire\Admin\ShowStudentBoarder::class)->name('student-boarders.show');
         Route::get('/payments', \App\Livewire\Admin\Payments::class)->name('payments');
