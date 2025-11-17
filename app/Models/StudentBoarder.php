@@ -32,12 +32,25 @@ class StudentBoarder extends Model
 
         static::updating(function ($boarder) {
             if ($boarder->isDirty('approval_status') && $boarder->approval_status === 'approved') {
-                // Auto-approve booking and occupy room
+                // Auto-approve booking
                 $booking = $boarder->booking;
                 $booking->update(['status' => 'active']);
-                $booking->room->update(['status' => 'occupied']);
 
-                // Sync next due (e.g., next monthly due)
+                // Only update room status if room exists
+                if ($booking->room) {
+                    $booking->room->update(['status' => 'occupied']);
+                } else {
+                    // Log or handle the case where room is missing
+                    \Log::warning("Booking {$booking->id} approved but has no room assigned");
+                }
+
+                // Generate initial bill if room exists and has price
+                if ($booking->room && $booking->room->price) {
+                    $billGenerator = new \App\Services\BillGenerator();
+                    $billGenerator->generateInitialBill($booking);
+                }
+
+                // Sync next due date
                 $boarder->next_payment_due = $booking->monthly_due_date ? 
                     now()->startOfMonth()->addDays($booking->monthly_due_date - 1) : null;
             }

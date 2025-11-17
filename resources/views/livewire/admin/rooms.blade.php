@@ -287,39 +287,5 @@
             </div>
         </div>
     </div>
-
-    <!-- Keyboard Navigation Script -->
-    <script>
-        document.addEventListener('keydown', function(e) {
-            if (@this.get('viewerActive')) {
-                if (e.key === 'ArrowLeft') {
-                    @this.call('prevImage');
-                    e.preventDefault();
-                } else if (e.key === 'ArrowRight') {
-                    @this.call('nextImage');
-                    e.preventDefault();
-                } else if (e.key === 'Escape') {
-                    @this.call('closeViewer');
-                    e.preventDefault();
-                }
-            }
-        });
-
-        // Prevent body scroll when viewer is active
-        Livewire.hook('component.init', ({ component }) => {
-            if (component.name === 'admin.rooms') {
-                Livewire.hook('element.updated', (el, component) => {
-                    if (component.name === 'admin.rooms') {
-                        const viewerActive = @this.get('viewerActive');
-                        if (viewerActive) {
-                            document.body.classList.add('gallery-viewer-active');
-                        } else {
-                            document.body.classList.remove('gallery-viewer-active');
-                        }
-                    }
-                });
-            }
-        });
-    </script>
     @endif
 </div>

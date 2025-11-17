@@ -46,13 +46,14 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/announcements', \App\Livewire\Admin\CreateAnnouncement::class)->name('announcements.index');
     });
 
-// STUDENT ROUTES
+
 Route::middleware(['auth', 'role:student'])
     ->prefix('student')
     ->name('student.')
     ->group(function () {
         Route::get('/dashboard', \App\Livewire\Student\Dashboard::class)->name('dashboard');
         Route::get('/room', \App\Livewire\Student\Room::class)->name('room');
+        Route::get('/room/{room}', \App\Livewire\Student\ViewRoom::class)->name('room.view'); // ← Add this line
         Route::get('/payments', \App\Livewire\Student\Payments::class)->name('payments');
         Route::get('/maintenance', \App\Livewire\Student\Maintenance::class)->name('maintenance');
     });

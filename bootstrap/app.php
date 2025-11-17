@@ -16,7 +16,12 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => CheckRole::class,
         ]);
-    })
-    ->withExceptions(function (Exceptions $exceptions): void {
+    })->withSchedule(function (\Illuminate\Console\Scheduling\Schedule $schedule) {
+        // Generate monthly bills on the 1st of every month at 00:00
+        $schedule->command('bills:generate')->monthlyOn(1, '00:00');
+        
+        // Update overdue bills daily at 06:00
+        $schedule->command('bills:update-overdue')->dailyAt('06:00');
+    })->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();

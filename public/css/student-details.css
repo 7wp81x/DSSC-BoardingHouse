@@ -601,3 +601,101 @@
         gap: 0.75rem;
     }
 }
+
+/* Student Details - Fixed colors to match admin-payments */
+
+/* Fix color variables */
+.student-name {
+    color: #f9fafb; /* Fixed from gray-300 to white */
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #f9fafb; /* Fixed from gray-300 to white */
+    margin: 0;
+    flex: 1;
+}
+
+.info-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: #1f2937; /* Fixed to proper text color */
+    min-width: 140px;
+    flex-shrink: 0;
+}
+
+.dark .info-label {
+    color: #f9fafb; /* White in dark mode */
+}
+/* Fix payment status text colors */
+.payment-status-text {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1f2937; /* Proper text color */
+    margin-bottom: 0.25rem;
+}
+
+.dark .tab-active {
+    color: #4f46e5;
+    background: #374151;
+}
+
+.dark .payment-status-text {
+    color: #f9fafb;
+}
+
+/* Fix notice title color */
+.notice-title {
+    font-weight: 600;
+    color: #1f2937; /* Proper text color */
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.dark .notice-title {
+    color: #f9fafb;
+}
+
+/* Fix empty state colors */
+.empty-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937; /* Proper text color */
+    margin-bottom: 0.5rem;
+}
+
+.dark .empty-title {
+    color: #f9fafb;
+}
+
+/* Add missing dark mode for action buttons */
+.dark .action-button {
+    background: #374151;
+    border-color: #4b5563;
+    color: #f9fafb;
+}
+
+.dark .action-button.primary {
+    border-color: #4f46e5;
+    background: rgba(79, 70, 229, 0.2);
+    color: #c7d2fe;
+}
+
+.dark .action-button.warning {
+    border-color: #f59e0b;
+    background: rgba(245, 158, 11, 0.2);
+    color: #fef3c7;
+}
+
+.dark .action-button.success {
+    border-color: #10b981;
+    background: rgba(16, 185, 129, 0.2);
+    color: #d1fae5;
+}

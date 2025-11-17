@@ -46,11 +46,6 @@
     overflow: hidden;
 }
 
-.dark .main-card {
-    --card-bg: #1f2937;
-    --card-border: #374151;
-}
-
 /* Header Section */
 .card-header {
     background: linear-gradient(135deg, #4f46e5, #3730a3);
@@ -60,7 +55,7 @@
 
 .header-content {
     display: flex;
-    justify-content: between;
+    justify-content: space-between;
     align-items: center;
     gap: 2rem;
 }
@@ -176,7 +171,7 @@
 
 .tab-count {
     background: var(--count-bg, #e5e7eb);
-    color: var(--count-text, #374151);
+    color: var(--count-text, #1f2937);
     padding: 0.25rem 0.5rem;
     border-radius: 20px;
     font-size: 0.75rem;
@@ -481,23 +476,23 @@
 }
 
 .status-pending {
-    background: #fef3c7;
+    background: #1f2937;
     color: #92400e;
 }
 
 .status-approved {
-    background: #d1fae5;
+    background: #1f2937;
     color: #065f46;
 }
 
 .status-rejected {
-    background: #fee2e2;
+    background: #1f2937;
     color: #991b1b;
 }
 
 .status-cancelled {
-    background: #f3f4f6;
-    color: #374151;
+    background: #1f2937;
+    color: #1f2937;
 }
 
 .processed-info {
@@ -621,7 +616,7 @@
 
 .method-header {
     display: flex;
-    justify-content: between;
+    justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 1rem;
 }
@@ -696,7 +691,7 @@
 
 .detail-item {
     display: flex;
-    justify-content: between;
+    justify-content: space-between;
     align-items: flex-start;
     gap: 1rem;
 }
@@ -741,7 +736,7 @@
 
 .method-footer {
     display: flex;
-    justify-content: between;
+    justify-content: space-between;
     align-items: center;
     padding-top: 1rem;
     border-top: 1px solid var(--card-border, #e2e8f0);
@@ -838,7 +833,7 @@
 
 .summary-item {
     display: flex;
-    justify-content: between;
+    justify-content: space-between;
     margin-bottom: 0.5rem;
 }
 
@@ -875,7 +870,7 @@
 
 .detail-item {
     display: flex;
-    justify-content: between;
+    justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 0.75rem;
     gap: 1rem;
@@ -1002,7 +997,7 @@
 /* Modal Actions */
 .modal-actions {
     display: flex;
-    justify-content: between;
+    justify-content: space-between;
     align-items: center;
     gap: 1rem;
 }
@@ -1037,7 +1032,7 @@
 
 .btn-secondary {
     background: var(--btn-secondary-bg, #f3f4f6);
-    color: var(--btn-secondary-text, #374151);
+    color: var(--btn-secondary-text, #1f2937);
 }
 
 .btn-secondary:hover {
@@ -1110,6 +1105,156 @@
     border-top: 1px solid var(--card-border, #e2e8f0);
     display: flex;
     justify-content: center;
+}
+
+/* Dark Mode Support */
+.dark .main-card {
+    --card-bg: #1f2937;
+    --card-border: #4b5563;
+}
+
+.dark .tabs-container {
+    background: #1f2937;
+    border-bottom-color: #4b5563;
+}
+
+.dark .search-section {
+    background: #1f2937;
+    border-bottom-color: #4b5563;
+}
+
+.dark .tab-button {
+    color: #9ca3af;
+}
+
+.dark .tab-button:hover {
+    color: #f9fafb;
+    background: #1f2937;
+}
+
+.dark .tab-active {
+    color: #4f46e5;
+    background: #1f2937;
+}
+
+.dark .search-input,
+.dark .filter-select,
+.dark .date-input {
+    background: #1f2937;
+    border-color: #4b5563;
+    color: #f9fafb;
+}
+
+.dark .search-input:focus,
+.dark .filter-select:focus,
+.dark .date-input:focus {
+    border-color: #4f46e5;
+}
+
+.dark .table-header {
+    background: #1f2937;
+}
+
+.dark .table-th {
+    color: #9ca3af;
+    border-bottom-color: #4b5563;
+}
+
+.dark .table-body {
+    background: #1f2937;
+}
+
+.dark .table-row {
+    border-bottom-color: #4b5563;
+}
+
+.dark .table-row:hover {
+    background: #1f2937;
+}
+
+.dark .student-name,
+.dark .amount-value,
+.dark .payment-method,
+.dark .date-main,
+.dark .methods-title,
+.dark .method-name,
+.dark .modal-title,
+.dark .section-title,
+.dark .detail-label,
+.dark .form-label,
+.dark .checkbox-text,
+.dark .empty-title {
+    color: #f9fafb;
+}
+
+.dark .student-email,
+.dark .student-room,
+.dark .bill-reference,
+.dark .date-time,
+.dark .processed-info,
+.dark .methods-description,
+.dark .method-type,
+.dark .method-instructions,
+.dark .detail-value,
+.dark .modal-description,
+.dark .empty-description {
+    color: #d1d5db;
+}
+
+.dark .reference-number {
+    background: #1f2937;
+    color: #f9fafb;
+}
+
+.dark .student-room {
+    background: #1f2937;
+    color: #d1d5db;
+}
+
+.dark .method-card {
+    background: #1f2937;
+    border-color: #4b5563;
+}
+
+.dark .method-instructions {
+    background: #1f2937;
+}
+
+.dark .payment-summary,
+.dark .detail-section {
+    background: #1f2937;
+    border-color: #4b5563;
+}
+
+.dark .form-input,
+.dark .form-select,
+.dark .form-textarea {
+    background: #1f2937;
+    border-color: #4b5563;
+    color: #f9fafb;
+}
+
+.dark .btn-secondary {
+    background: #4b5563;
+    color: #d1d5db;
+}
+
+.dark .btn-secondary:hover {
+    background: #1f2937;
+}
+
+.dark .modal-container {
+    background: #1f2937;
+}
+
+.dark .modal-close:hover {
+    background: #1f2937;
+}
+
+.dark .rejection-reason {
+    background: #92400e;
+    border-color: #b45309;
+    color: #fef3c7;
 }
 
 /* Responsive Design */

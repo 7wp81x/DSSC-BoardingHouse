@@ -146,6 +146,7 @@
     background: var(--active-bg, #f8faff);
 }
 
+
 .tab-inactive {
     color: var(--text-secondary, #6b7280);
 }
@@ -760,4 +761,114 @@
     .modal-actions {
         flex-direction: column;
     }
+}
+
+/* Student Boarders - Fixed to match admin-payments.css */
+
+/* Fix header content alignment */
+.header-content {
+    display: flex;
+    justify-content: space-between; /* Fixed typo: 'between' -> 'space-between' */
+    align-items: center;
+    gap: 2rem;
+}
+
+/* Add missing dark mode variables */
+.dark .tabs-container {
+    background: #1f2937;
+}
+
+.dark .search-section {
+    background: #1f2937;
+    border-bottom-color: #4b5563;
+}
+
+.dark .tab-button {
+    color: #9ca3af;
+}
+
+.dark .tab-button:hover {
+    color: #f9fafb;
+    background: #374151;
+}
+
+.dark .tab-active {
+    color: #4f46e5;
+    background: #1f2937;
+}
+
+.dark .search-input {
+    background: #1f2937;
+    border-color: #4b5563;
+    color: #f9fafb;
+}
+
+.dark .search-input:focus {
+    border-color: #4f46e5;
+}
+
+/* Fix table colors to match admin-payments */
+.dark .table-header {
+    background: #374151;
+}
+
+.dark .table-th {
+    color: #9ca3af;
+    border-bottom-color: #4b5563;
+}
+
+.dark .table-body {
+    background: #1f2937;
+}
+
+.dark .table-row {
+    border-bottom-color: #4b5563;
+}
+
+.dark .table-row:hover {
+    background: #374151;
+}
+
+.dark .student-name {
+    color: #f9fafb;
+}
+
+.dark .student-email,
+.dark .trashed-date,
+.dark .room-code,
+.dark .date-item,
+.dark .next-payment {
+    color: #d1d5db;
+}
+
+/* Fix modal dark mode */
+.dark .modal-container {
+    background: #1f2937;
+}
+
+.dark .modal-title {
+    color: #f9fafb;
+}
+
+.dark .modal-description {
+    color: #d1d5db;
+}
+
+.dark .date-picker {
+    background: #1f2937;
+    border-color: #4b5563;
+    color: #f9fafb;
+}
+
+.dark .date-picker-label {
+    color: #f9fafb;
+}
+
+.dark .btn-secondary {
+    background: #4b5563;
+    color: #d1d5db;
+}
+
+.dark .btn-secondary:hover {
+    background: #374151;
 }

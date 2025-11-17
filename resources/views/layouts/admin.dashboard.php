@@ -18,7 +18,6 @@
     <link rel="stylesheet" href="{{ asset('css/dashboard-styles.css') }}">
     <link rel="stylesheet" href="{{ asset('css/admin-dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/admin.styles.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/admin.dash1.css') }}">
 
     <!-- Conditional CSS based on URI -->
     @if (str_contains(strtolower(request()->path()), 'student-boarders'))

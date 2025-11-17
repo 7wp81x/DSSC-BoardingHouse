@@ -1,0 +1,747 @@
+/* Student Payments Styles - Integrated with Admin Design */
+.student-payments-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+/* Use same alert styles as admin */
+.alert-success, .alert-error {
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+}
+
+.alert-error {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+}
+
+.alert-close {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.alert-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Main Card - Same as admin */
+.main-card {
+    background: var(--card-bg, #ffffff);
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--card-border, #e2e8f0);
+    overflow: hidden;
+}
+
+/* Header Section - Same as admin */
+.card-header {
+    background: linear-gradient(135deg, #4f46e5, #3730a3);
+    color: white;
+    padding: 2rem;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+}
+
+.header-title-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+}
+
+.header-icon {
+    font-size: 2.5rem;
+    opacity: 0.9;
+}
+
+.header-title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem 0;
+}
+
+.header-subtitle {
+    opacity: 0.9;
+    margin: 0;
+    font-size: 1.125rem;
+}
+
+/* Tabs Navigation - Same as admin */
+.tabs-container {
+    padding: 0 2rem;
+    background: var(--card-bg, #ffffff);
+    border-bottom: 1px solid var(--card-border, #e2e8f0);
+}
+
+.tabs-nav {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.tab-button {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+    font-weight: 500;
+    color: var(--text-secondary, #6b7280);
+    position: relative;
+}
+
+.tab-button:hover {
+    color: var(--text-primary, #1f2937);
+    background: var(--hover-bg, #f3f4f6);
+}
+
+.tab-active {
+    color: #4f46e5;
+    border-bottom-color: #4f46e5;
+    background: var(--active-bg, #f8faff);
+}
+
+.tab-inactive {
+    color: var(--text-secondary, #6b7280);
+}
+
+.tab-icon {
+    font-size: 1rem;
+}
+
+.tab-count {
+    background: var(--count-bg, #e5e7eb);
+    color: var(--count-text, #374151);
+    padding: 0.25rem 0.5rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    min-width: 1.5rem;
+    text-align: center;
+}
+
+.badge-pending {
+    background: #f59e0b;
+    color: white;
+}
+
+.tab-active .tab-count {
+    background: #4f46e5;
+    color: white;
+}
+
+/* Payment Section */
+.payment-section {
+    padding: 2rem;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary, #1f2937);
+    margin-bottom: 1.5rem;
+}
+
+/* Bills Grid */
+.bills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.bill-card {
+    background: var(--card-bg, #ffffff);
+    border: 2px solid var(--card-border, #e2e8f0);
+    border-radius: 12px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.bill-card:hover {
+    border-color: #4f46e5;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.bill-card.selected {
+    border-color: #4f46e5;
+    background: var(--selected-bg, #f8faff);
+}
+
+.bill-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.bill-title {
+    font-weight: 600;
+    color: var(--text-primary, #1f2937);
+    margin-bottom: 0.25rem;
+    font-size: 1.125rem;
+}
+
+.bill-room {
+    font-size: 0.875rem;
+    color: var(--text-secondary, #6b7280);
+}
+
+.bill-amount {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #4f46e5;
+}
+
+.bill-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-secondary, #6b7280);
+}
+
+/* Payment Methods */
+.methods-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.method-card {
+    background: var(--card-bg, #ffffff);
+    border: 2px solid var(--card-border, #e2e8f0);
+    border-radius: 12px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.method-card:hover {
+    border-color: #4f46e5;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.method-card.selected {
+    border-color: #4f46e5;
+    background: var(--selected-bg, #f8faff);
+}
+
+.method-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.method-icon {
+    font-size: 1.5rem;
+    color: #4f46e5;
+}
+
+.method-name {
+    font-weight: 600;
+    color: var(--text-primary, #1f2937);
+    font-size: 1.125rem;
+}
+
+.method-details {
+    font-size: 0.875rem;
+    color: var(--text-secondary, #6b7280);
+    line-height: 1.5;
+}
+
+.method-instructions {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--section-bg, #f8fafc);
+    border-radius: 8px;
+    font-size: 0.875rem;
+    color: var(--text-secondary, #6b7280);
+    border-left: 4px solid #4f46e5;
+}
+
+/* Payment Form */
+.payment-form {
+    background: var(--section-bg, #f8fafc);
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid var(--card-border, #e2e8f0);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    font-weight: 600;
+    color: var(--text-primary, #1f2937);
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--input-border, #d1d5db);
+    border-radius: 8px;
+    background: var(--input-bg, #ffffff);
+    color: var(--text-primary, #1f2937);
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.file-input-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    width: 100%;
+}
+
+.file-input {
+    position: absolute;
+    left: -9999px;
+}
+
+.file-input-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    background: #4f46e5;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: 500;
+    width: 100%;
+}
+
+.file-input-label:hover {
+    background: #4338ca;
+    transform: translateY(-1px);
+}
+
+.file-name {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--success-color, #10b981);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.payment-summary {
+    background: var(--card-bg, #ffffff);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--card-border, #e2e8f0);
+    margin-top: 2rem;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--text-primary, #1f2937);
+}
+
+.summary-item.total {
+    font-weight: 600;
+    font-size: 1rem;
+    border-top: 1px solid var(--card-border, #e2e8f0);
+    padding-top: 0.75rem;
+    margin-top: 0.75rem;
+    color: var(--text-primary, #1f2937);
+}
+
+/* Use same table styles as admin */
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.payments-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+h3 {
+    color: var(--table-header-bg, #f9fafb);
+}
+
+.table-header {
+    background: var(--table-header-bg, #f9fafb);
+}
+
+.table-th {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary, #6b7280);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--table-border, #e5e7eb);
+}
+
+.table-body {
+    background: var(--card-bg, #ffffff);
+}
+
+.table-row {
+    border-bottom: 1px solid var(--table-border, #e5e7eb);
+    transition: background-color 0.2s ease;
+}
+
+.table-row:hover {
+    background: var(--table-hover, #f9fafb);
+}
+
+.table-row.status-pending {
+    border-left: 4px solid #f59e0b;
+}
+
+.table-row.status-approved {
+    border-left: 4px solid #10b981;
+}
+
+.table-row.status-rejected {
+    border-left: 4px solid #ef4444;
+}
+
+.table-row.status-cancelled {
+    border-left: 4px solid #6b7280;
+}
+
+.table-td {
+    padding: 1.5rem;
+    vertical-align: top;
+}
+
+/* Status badges - same as admin */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status-approved {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.status-rejected {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.status-cancelled {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+/* Action buttons - same as admin */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.btn-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    min-width: 2rem;
+    min-height: 2rem;
+}
+
+.btn-action.primary {
+    background: #4f46e5;
+    color: white;
+}
+
+.btn-action.primary:hover {
+    background: #4338ca;
+    transform: translateY(-1px);
+}
+
+/* Main buttons - same as admin */
+.btn-primary, .btn-secondary, .btn-success {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: #4f46e5;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #4338ca;
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: var(--btn-secondary-bg, #f3f4f6);
+    color: var(--btn-secondary-text, #374151);
+}
+
+.btn-secondary:hover {
+    background: var(--btn-secondary-hover, #e5e7eb);
+}
+
+.btn-success {
+    background: #10b981;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #059669;
+    transform: translateY(-1px);
+}
+
+/* Empty state - same as admin */
+.empty-state {
+    text-align: center;
+    padding: 3rem !important;
+}
+
+.empty-content {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.empty-icon {
+    font-size: 3rem;
+    color: var(--text-secondary, #6b7280);
+    margin-bottom: 1rem;
+}
+
+.empty-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary, #1f2937);
+    margin-bottom: 0.5rem;
+}
+
+.empty-description {
+    color: var(--text-secondary, #6b7280);
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+}
+
+/* Pagination - same as admin */
+.pagination-container {
+    padding: 1.5rem 2rem;
+    border-top: 1px solid var(--card-border, #e2e8f0);
+    display: flex;
+    justify-content: center;
+}
+
+/* Dark mode support */
+.dark .main-card {
+    --card-bg: #1f2937;
+    --card-border: #374151;
+}
+
+.dark .tabs-container {
+    background: #1f2937;
+}
+
+.dark .tab-button {
+    color: #9ca3af;
+}
+
+.dark .tab-button:hover {
+    color: #f9fafb;
+    background: #374151;
+}
+
+.dark .tab-active {
+    color: #4f46e5;
+    background: #374151;
+}
+
+.dark .bill-card,
+.dark .method-card,
+.dark .payment-form,
+.dark .payment-summary {
+    background: #374151;
+    border-color: #4b5563;
+}
+
+.dark .bill-card.selected,
+.dark .method-card.selected {
+    background: #1f2937;
+}
+
+.dark .section-title,
+.dark .bill-title,
+.dark .method-name,
+.dark .form-label,
+.dark .summary-item {
+    color: #f9fafb;
+}
+
+.dark .bill-room,
+.dark .bill-details,
+.dark .method-details,
+.dark .method-instructions,
+.dark .empty-description {
+    color: #d1d5db;
+}
+
+.dark .form-input {
+    background: #1f2937;
+    border-color: #4b5563;
+    color: #f9fafb;
+}
+
+.dark .form-input:focus {
+    border-color: #4f46e5;
+}
+
+.dark .method-instructions {
+    background: #1f2937;
+}
+
+.dark .table-header {
+    background: #374151;
+}
+
+.dark .table-th {
+    color: #9ca3af;
+}
+
+.dark .table-body {
+    background: #374151;
+}
+
+.dark .table-row:hover {
+    background: #1f2937;
+}
+
+.dark .table-td {
+    color: #f9fafb;
+}
+
+.dark .btn-secondary {
+    background: #4b5563;
+    color: #d1d5db;
+}
+
+.dark .btn-secondary:hover {
+    background: #374151;
+}
+
+.dark .empty-icon {
+    color: #4b5563;
+}
+
+.dark .empty-title {
+    color: #f9fafb;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .student-payments-container {
+        padding: 0.5rem;
+    }
+    
+    .card-header {
+        padding: 1.5rem;
+    }
+    
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .tabs-container {
+        padding: 0 1rem;
+    }
+    
+    .tabs-nav {
+        flex-direction: column;
+    }
+    
+    .tab-button {
+        justify-content: center;
+    }
+    
+    .payment-section {
+        padding: 1rem;
+    }
+    
+    .bills-grid,
+    .methods-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .payment-form {
+        padding: 1rem;
+    }
+    
+    .table-th, .table-td {
+        padding: 1rem;
+    }
+}

@@ -8,6 +8,7 @@ use Livewire\WithFileUploads;
 use App\Models\Payment;
 use App\Models\PaymentMethod;
 use App\Models\User;
+use App\Models\Bill; 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
@@ -138,9 +139,33 @@ class Payments extends Component
                 'processed_at' => now()
             ]);
 
-            // Here you can also update the bill status if needed
             if ($payment->bill) {
-                $payment->bill->update(['status' => 'paid']);
+                // Check if this is a partial payment
+                if ($payment->amount < $payment->bill->amount) {
+                    // For partial payments, reduce the bill amount and keep it pending
+                    $remainingAmount = $payment->bill->amount - $payment->amount;
+                    $payment->bill->update([
+                        'amount' => $remainingAmount,
+                        'status' => Bill::STATUS_PENDING // Keep it visible to student
+                    ]);
+                    
+                    \Log::info('Partial payment approved', [
+                        'payment_id' => $payment->id,
+                        'original_bill_amount' => $payment->bill->amount + $payment->amount,
+                        'remaining_amount' => $remainingAmount,
+                        'bill_id' => $payment->bill->id
+                    ]);
+                    
+                } else {
+                    // For full payments, mark as paid
+                    $payment->bill->update(['status' => 'paid']);
+                    
+                    \Log::info('Full payment approved', [
+                        'payment_id' => $payment->id,
+                        'bill_id' => $payment->bill->id,
+                        'amount' => $payment->amount
+                    ]);
+                }
             }
         });
 
@@ -163,6 +188,11 @@ class Payments extends Component
                 'processed_by' => auth()->id(),
                 'processed_at' => now()
             ]);
+
+            // REVERT BILL STATUS BACK TO PENDING
+            if ($this->selectedPayment->bill) {
+                $this->selectedPayment->bill->update(['status' => Bill::STATUS_PENDING]);
+            }
         });
 
         $this->showRejectModal = false;
@@ -175,15 +205,22 @@ class Payments extends Component
     public function cancelPayment($paymentId)
     {
         $payment = Payment::find($paymentId);
-        $payment->update([
-            'status' => Payment::STATUS_CANCELLED,
-            'processed_by' => auth()->id(),
-            'processed_at' => now()
-        ]);
+        
+        DB::transaction(function () use ($payment) {
+            $payment->update([
+                'status' => Payment::STATUS_CANCELLED,
+                'processed_by' => auth()->id(),
+                'processed_at' => now()
+            ]);
+
+            // REVERT BILL STATUS BACK TO PENDING
+            if ($payment->bill) {
+                $payment->bill->update(['status' => Bill::STATUS_PENDING]);
+            }
+        });
 
         session()->flash('message', 'Payment cancelled successfully.');
     }
-
     // Payment Methods Management
     public function showMethodForm($methodId = null)
     {
@@ -273,8 +310,10 @@ class Payments extends Component
         $method = PaymentMethod::find($methodId);
         
         // Check if method is being used
-        if ($method->payments()->exists()) {
-            session()->flash('error', 'Cannot delete payment method that has associated payments.');
+        $paymentCount = Payment::where('payment_method', $method->name)->count();
+        
+        if ($paymentCount > 0) {
+            session()->flash('error', "Cannot delete payment method. There are {$paymentCount} payments associated with '{$method->name}'.");
             return;
         }
 
