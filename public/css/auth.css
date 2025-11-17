@@ -1,0 +1,374 @@
+/* public/css/auth.css */
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+}
+
+/* Auth Layout */
+.auth-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.auth-wrapper {
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Header Styles */
+.auth-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.logo-icon {
+    width: 50px;
+    height: 50px;
+    background: #4f46e5;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    color: white;
+    font-size: 20px;
+}
+
+.logo-text {
+    font-size: 28px;
+    font-weight: 700;
+    color: white;
+}
+
+.auth-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 8px;
+}
+
+.auth-subtitle {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 16px;
+}
+
+/* Card Styles */
+.auth-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    padding: 32px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 6px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.2s ease;
+    background: white;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.form-input::placeholder {
+    color: #9ca3af;
+}
+
+/* Password Input Wrapper */
+.password-wrapper {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: color 0.2s ease;
+}
+
+.password-toggle:hover {
+    color: #4f46e5;
+}
+
+/* Checkbox Styles */
+.checkbox-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.checkbox-input {
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    accent-color: #4f46e5;
+}
+
+.checkbox-label {
+    font-size: 14px;
+    color: #374151;
+    line-height: 1.4;
+}
+
+.checkbox-label a {
+    color: #4f46e5;
+    text-decoration: none;
+}
+
+.checkbox-label a:hover {
+    text-decoration: underline;
+}
+
+/* Button Styles */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.4);
+}
+
+.btn-secondary {
+    background: white;
+    color: #4f46e5;
+    border: 2px solid #4f46e5;
+}
+
+.btn-secondary:hover {
+    background: #4f46e5;
+    color: white;
+}
+
+/* Divider */
+.divider {
+    position: relative;
+    text-align: center;
+    margin: 32px 0;
+}
+
+.divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #e5e7eb;
+}
+
+.divider-text {
+    background: white;
+    padding: 0 16px;
+    color: #6b7280;
+    font-size: 14px;
+    position: relative;
+    display: inline-block;
+}
+
+/* Alert Styles */
+.alert {
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.alert-success {
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    color: #065f46;
+}
+
+.alert-error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+}
+
+.alert-auto-hide {
+    animation: fadeOut 0.5s ease 5s forwards;
+}
+
+/* Error Messages */
+.error-message {
+    color: #dc2626;
+    font-size: 14px;
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Links */
+.text-link {
+    color: #4f46e5;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.text-link:hover {
+    text-decoration: underline;
+}
+
+/* Back Link */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    margin-top: 20px;
+    transition: opacity 0.2s ease;
+}
+
+.back-link:hover {
+    opacity: 0.8;
+}
+
+/* Demo Accounts */
+.demo-accounts {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 24px;
+    border: 1px solid #e2e8f0;
+}
+
+.demo-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 8px;
+}
+
+.demo-account {
+    font-size: 12px;
+    color: #6b7280;
+    margin-bottom: 4px;
+}
+
+/* Animations */
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        height: 0;
+        padding: 0;
+        margin: 0;
+        border: none;
+    }
+}
+
+.fa-spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .auth-container {
+        padding: 16px;
+    }
+    
+    .auth-card {
+        padding: 24px;
+    }
+    
+    .logo-text {
+        font-size: 24px;
+    }
+    
+    .auth-title {
+        font-size: 20px;
+    }
+}
+
+/* Loading State */
+.btn-loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+/* Password Strength */
+.password-strength {
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.strength-weak { color: #dc2626; }
+.strength-medium { color: #d97706; }
+.strength-strong { color: #059669; }
+.strength-very-strong { color: #065f46; }

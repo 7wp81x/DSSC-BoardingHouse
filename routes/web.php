@@ -2,17 +2,42 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
-// ROOT ROUTE — THE FIX
+// LANDING PAGE ROUTE - Show landing page for guests only
 Route::get('/', function () {
-    if (!auth()->check()) {
-        return redirect()->route('login');
-    }
+    // Fetch rooms data
+    $rooms = \App\Models\Room::where('status', 'available')
+                ->with(['images' => function($query) {
+                    $query->where('is_primary', 1);
+                }])
+                ->orderBy('type')
+                ->limit(4)
+                ->get();
 
-    return redirect()->route(
-        auth()->user()->role === 'admin' ? 'admin.dashboard' : 'student.dashboard'
-    );
+    // Get room types for pricing section
+    $roomTypes = \App\Models\Room::where('status', 'available')
+                    ->selectRaw('type, MIN(price) as min_price, COUNT(*) as room_count')
+                    ->groupBy('type')
+                    ->get()
+                    ->keyBy('type');
+
+    return view('landing-page', compact('rooms', 'roomTypes'));
 })->name('home');
+
+// AUTH ROUTES
+Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+
+// PUBLIC PAGES (accessible to everyone)
+Route::get('/rooms', [LandingPageController::class, 'showRooms'])->name('rooms.public');
+Route::get('/rooms/{room}', [LandingPageController::class, 'showRoom'])->name('rooms.public.show');
+Route::get('/pricing', [LandingPageController::class, 'showPricing'])->name('pricing.public');
+Route::get('/contact', [LandingPageController::class, 'showContact'])->name('contact.public');
+
+// INQUIRY FORM
+Route::post('/inquiry', [LandingPageController::class, 'submitInquiry'])->name('inquiry.submit');
 
 // PROFILE ROUTES (for all authenticated users)
 Route::middleware('auth')->group(function () {
@@ -53,9 +78,26 @@ Route::middleware(['auth', 'role:student'])
     ->group(function () {
         Route::get('/dashboard', \App\Livewire\Student\Dashboard::class)->name('dashboard');
         Route::get('/room', \App\Livewire\Student\Room::class)->name('room');
-        Route::get('/room/{room}', \App\Livewire\Student\ViewRoom::class)->name('room.view'); // ← Add this line
+        Route::get('/room/{room}', \App\Livewire\Student\ViewRoom::class)->name('room.view');
         Route::get('/payments', \App\Livewire\Student\Payments::class)->name('payments');
         Route::get('/maintenance', \App\Livewire\Student\Maintenance::class)->name('maintenance');
     });
 
+Route::get('/test-styles', function() {
+    return '
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <link href="https://cdn.tailwindcss.com/3.4.17" rel="stylesheet">
+    </head>
+    <body class="bg-blue-500 p-8">
+        <div class="bg-white rounded-lg p-6 shadow-lg">
+            <h1 class="text-3xl font-bold text-blue-600">Tailwind Test</h1>
+            <p class="text-gray-600 mt-2">If this has styles, Tailwind is working!</p>
+            <button class="bg-blue-500 text-white px-4 py-2 rounded mt-4">Test Button</button>
+        </div>
+    </body>
+    </html>
+    ';
+});
 require __DIR__.'/auth.php';

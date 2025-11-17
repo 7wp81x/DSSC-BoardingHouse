@@ -16,22 +16,26 @@ class CheckRole
 
         $user = Auth::user();
 
+        // Use custom role field instead of Spatie's hasRole()
         foreach ($roles as $role) {
-            if ($user->hasRole($role)) {
+            if ($user->role === $role) {
                 return $next($request);
             }
         }
 
-        // DO NOT LOGOUT — just redirect based on role
-        if ($user->hasRole('admin')) {
+        // User doesn't have required role - redirect appropriately
+        $currentRoute = $request->route()->getName();
+        
+        if ($user->role === 'admin' && $currentRoute !== 'admin.dashboard') {
             return redirect()->route('admin.dashboard');
         }
 
-        if ($user->hasRole('student')) {
+        if ($user->role === 'student' && $currentRoute !== 'student.dashboard') {
             return redirect()->route('student.dashboard');
         }
 
-        // Fallback: if no role at all → send to login with message
-        return redirect('/login')->with('error', 'Your account has no role assigned. Contact admin.');
+        // If we're already on the correct dashboard but still failing role check,
+        // show an error instead of redirecting
+        abort(403, 'Unauthorized access.');
     }
 }

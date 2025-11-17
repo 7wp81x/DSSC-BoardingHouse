@@ -67,7 +67,7 @@ class User extends Authenticatable
     {
         //return $this->role === 'admin'; // Adjust based on your role system
         // Or if using Laravel Permissions:
-        return $this->hasRole('admin');
+        return $this->role === 'admin';
     }
 
     // Optional: keep your nice initials helper
